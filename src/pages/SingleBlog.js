@@ -1,47 +1,48 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Meta from "../components/Meta";
 import BreadCrumb from "../components/BreadCrumb";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { HiOutlineArrowLeft } from "react-icons/hi";
+import { useDispatch, useSelector } from "react-redux";
+import { getSingleBlog } from "../features/blog/blogSlice";
 
 const SingleBlog = () => {
+  const blogState = useSelector((state) => state?.blog?.singleBlog);
+  const location = useLocation();
+  const getBlogId = location.pathname.split("/")[2];
+  console.log(getBlogId)
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    getABlog();
+  }, []);
+  const getABlog = () => {
+    dispatch(getSingleBlog(getBlogId));
+  };
+
   return (
     <>
-      <Meta title={"Dinamy Blog name"} />
-      <BreadCrumb title="Dinamy Blog name" />
+      <Meta title={blogState?.title} />
+      <BreadCrumb title={blogState?.title} />
 
       <div className="blog-wrapper home-wrapper-2 py-5">
         <div className="container-xxl">
           <div className="row">
             <div className="col-12">
               <div className="single-blog-card">
-                <Link to="/blogs" className="d-flex align-items-center gap-10">
+                <Link to="/blog" className="d-flex align-items-center gap-10">
                   {" "}
                   <HiOutlineArrowLeft className="fs-6" />
                   Go back to Blogs
                 </Link>
-                <h3 className="title">
-                  A beautiful sunday morning reanissance
-                </h3>
+                <h3 className="title">{blogState?.title}</h3>
                 <img
-                  src="images/blog-1.jpg"
+                  src={blogState?.images[0]?.url}
                   className="img-fluid w-100 my-4"
                   alt="images"
                 />
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation laboris
-                  nisi ut ex ea Lorem ipsum dolor sit amet, consectetur
-                  adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                  dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                  exercitation laboris nisi ut ex ea Lorem ipsum dolor sit amet,
-                  consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                  ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                  quis nostrud exercitation laboris nisi ut ex ea Lorem ipsum
-                  dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                  minim veniam, quis nost{" "}
+                <p  dangerouslySetInnerHTML={{ __html: blogState?.description }}>
+                
                 </p>
               </div>
             </div>

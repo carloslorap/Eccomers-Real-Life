@@ -21,6 +21,8 @@ import TermAndContions from './pages/TermAndContions';
 import SingleProduct from './pages/SingleProduct';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
+import Profile from './pages/Profile';
+import { PrivateRoutes } from './routing/PrivateRoutes';
 
 function App() {
   return (
@@ -29,20 +31,21 @@ function App() {
       <Routes>
         <Route path='/' element={<Layout/>}>
           <Route index element={<Home/>}/>
-          <Route path='about' element={<About/>}/>
+          <Route path='about' element={<About/>}/> 
           <Route path='contact' element={<Contact/>}/>
           <Route path='store' element={<OurStore/>}/>
-          <Route path='blogs' element={<Blog/>}/>
+          <Route path='blog' element={<Blog/>}/>
           <Route path='blog/:id' element={<SingleBlog/>}/>
-          <Route path='compare-product' element={<CompareProduct/>}/>
-          <Route path='wishlist' element={<Wishlist/>}/>
+          <Route path='compare-product' element={<PrivateRoutes><CompareProduct/></PrivateRoutes>}/>
+          <Route path='wishlist' element={<PrivateRoutes><Wishlist/></PrivateRoutes>}/>
           <Route path='login' element={<Login/>}/>
           <Route path='forgot-password' element={<Forgotpassword/>}/>
           <Route path='signup' element={<Signup/>}/>
-          <Route path='reset-password' element={<Resetpassword/>}/>
-          <Route path='product' element={<SingleProduct/>}/>
-          <Route path='cart' element={<Cart/>}/>
-          <Route path='checkout' element={<Checkout/>}/>
+          <Route path='reset-password/:token' element={<Resetpassword/>}/>
+          <Route path='product/:id' element={<SingleProduct/>}/>
+          <Route path='cart' element={<PrivateRoutes><Cart/></PrivateRoutes>}/>
+          <Route path='checkout' element={<PrivateRoutes><Checkout/></PrivateRoutes>}/>
+          <Route path='profile' element={<PrivateRoutes><Profile/></PrivateRoutes>}/>
 
           <Route path='privacy-policy' element={<PrivacyPolicy/>}/>
           <Route path='refund-policy' element={<RefundPolicy/>}/>

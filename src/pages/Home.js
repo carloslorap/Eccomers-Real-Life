@@ -1,15 +1,41 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Autoplay } from "swiper";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Marquee from "react-fast-marquee";
 import BlogCard from "../components/BlogCard";
 import ProductCard from "../components/ProductCard";
 import SpecialProduct from "../components/SpecialProduct";
 import Container from "../components/Container";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { useDispatch, useSelector } from "react-redux";
 import { Banner } from "../utils/Data";
+import { getBlogs } from "../features/blog/blogSlice";
+import moment from "moment";
+import { getProducts } from "../features/product/productSlice";
+import ReactStars from "react-rating-stars-component";
+import { addToWishList } from "../features/product/productSlice";
 
 const Home = () => {
+  const blogState = useSelector((state) => state?.blog?.getAllBlog);
+  const productState = useSelector((state) => state?.product?.product);
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    getAllBlogs();
+    GetAllProducts();
+  }, []);
+  const getAllBlogs = () => {
+    dispatch(getBlogs());
+  };
+
+  const GetAllProducts = () => {
+    dispatch(getProducts());
+  };
+  const addtowish = (id) => {
+    dispatch(addToWishList(id));
+  };
+
   return (
     <>
       <Container class1="home-wrapper-1 py-5">
@@ -17,9 +43,9 @@ const Home = () => {
           <div className="col-6">
             <Swiper
               direction="horizontal"
-              slidesPerView={1} 
+              slidesPerView={1}
               loop={true}
-              speed={1000} 
+              speed={1000}
               modules={[Autoplay]}
               autoplay={{ delay: 5000, disableOnInteraction: false }}
             >
@@ -38,20 +64,6 @@ const Home = () => {
                 </SwiperSlide>
               ))}
             </Swiper>
-
-            {/* <div className="main-banner position-relative">
-              <img
-                src="images/main-banner-1.jpg"
-                className="img-fluid rounded-3"
-                alt=""
-              />
-              <div className="main-banner-content  position-absolute">
-                <h4>SUPERCHARGED FOR PROS.</h4>
-                <h5>iPad S13+ Pro.</h5>
-                <p>From $999.00 or $41.62/mo</p>
-                <Link className="button">BUY NOW</Link>
-              </div>
-            </div> */}
           </div>
           <div className="col-6">
             <div className="d-flex flex-wrap gap-10 justify-content-between align-items-center">
@@ -173,7 +185,7 @@ const Home = () => {
                     <h6>Music & Gaming</h6>
                     <p>10 Items</p>
                   </div>
-                  <img src="images/acc.jpg" alt="" />
+                  <img src="images/images.jpg" alt="" />
                 </div>
 
                 <div className="d-flex gap-30 align-items-center">
@@ -205,7 +217,7 @@ const Home = () => {
                     <h6>Music & Gaming</h6>
                     <p>10 Items</p>
                   </div>
-                  <img src="images/acc.jpg" alt="" />
+                  <img src="images/images.jpg" alt="" />
                 </div>
 
                 <div className="d-flex gap-30 align-items-center">
@@ -242,10 +254,62 @@ const Home = () => {
           <div className="row">
             <div className="section-heading">
               <h3>Featured Collection</h3>
+              <div className="row mt-5">
+            {productState &&
+              productState?.map((item, index) => {
+                if (item.tags === "featured") {
+                  return (
+                    <div key={index} className={"col-3"}>
+                      <div className="product-card  position-relative">
+                        <div className="wishlist-icon position-absolute">
+                          <button
+                            className="border-0 bg-transparent"
+                            onClick={() => addtowish(item?._id)}
+                          >
+                            <img src="images/wish.svg" alt="" />
+                          </button>
+                        </div>
+                        <div className="product-image">
+                          <img
+                            src={item?.images[0]?.url}
+                            className="img-fluid"
+                            alt=""
+                          />
+                          <img src={item?.images[1]?.url} className="img-fluid" alt="" />
+                        </div>
+                        <div className="product-details">
+                          <h6 className="brand">{item?.brand}</h6>
+                          <h5 className="product-title">{item?.title}</h5>
+                          <ReactStars
+                            count={5}
+                            size={24}
+                            activeColor={"#ffd700"}
+                            value={item?.totalrating}
+                            edit={false}
+                          /> 
+
+                          <p className="price">$ {item?.price}</p>
+                        </div>
+                        <div className="action-bar position-absolute">
+                          <div className="d-flex flex-column gap-15">
+                            <button className="border-0 bg-transparent">
+                              <img src="images/prodcompare.svg" alt="" />
+                            </button>
+                            <button className="border-0 bg-transparent">
+                              <img src="images/view.svg" alt="" onClick={()=>navigate("/product/" + item?._id)}/>
+                            </button>
+                            <button className="border-0 bg-transparent">
+                              <img src="images/add-cart.svg" alt="" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+              })}
+          </div>
             </div>
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
             <ProductCard />
           </div>
         </div>
@@ -311,9 +375,23 @@ const Home = () => {
             </div>
           </div>
           <div className="row">
-            <SpecialProduct />
-            <SpecialProduct />
-            <SpecialProduct />
+            {productState &&
+              productState?.map((item, index) => {
+                if (item.tags === "special") {
+                  return (
+                    <SpecialProduct
+                      key={index}
+                      brand={item?.brand}
+                      title={item?.title}
+                      totalrating={item?.totalrating}
+                      price={item?.price}
+                      sold={item?.sold}
+                      quantity={item?.quantity}
+                      images={item?.images}
+                    />
+                  );
+                }
+              })}
           </div>
         </div>
       </section>
@@ -326,10 +404,59 @@ const Home = () => {
             </div>
           </div>
           <div className="row">
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
+            {productState &&
+              productState?.map((item, index) => {
+                if (item.tags === "popular") {
+                  return (
+                    <div key={index} className={"col-3"}>
+                      <div className="product-card  position-relative">
+                        <div className="wishlist-icon position-absolute">
+                          <button
+                            className="border-0 bg-transparent"
+                            onClick={() => addtowish(item?._id)}
+                          >
+                            <img src="images/wish.svg" alt="" />
+                          </button>
+                        </div>
+                        <div className="product-image">
+                          <img
+                            src={item?.images[0]?.url}
+                            className="img-fluid"
+                            alt=""
+                          />
+                          <img src={item?.images[1]?.url} className="img-fluid" alt="" />
+                        </div>
+                        <div className="product-details">
+                          <h6 className="brand">{item?.brand}</h6>
+                          <h5 className="product-title">{item?.title}</h5>
+                          <ReactStars
+                            count={5}
+                            size={24}
+                            activeColor={"#ffd700"}
+                            value={item?.totalrating}
+                            edit={false}
+                          /> 
+
+                          <p className="price">$ {item?.price}</p>
+                        </div>
+                        <div className="action-bar position-absolute">
+                          <div className="d-flex flex-column gap-15">
+                            <button className="border-0 bg-transparent">
+                              <img src="images/prodcompare.svg" alt="" />
+                            </button>
+                            <button className="border-0 bg-transparent">
+                              <img src="images/view.svg" alt="" onClick={()=>navigate("/product/" + item?._id)}/>
+                            </button>
+                            <button className="border-0 bg-transparent">
+                              <img src="images/add-cart.svg" alt="" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+              })}
           </div>
         </div>
       </section>
@@ -378,19 +505,25 @@ const Home = () => {
               <h3>Our Latest Blogs</h3>
             </div>
           </div>
-          <div className="row">
-            <div className="col-3">
+          <div className="row ">
+            {blogState?.map((item, index) => {
+              return (
+                <div className="col-3 mb-3">
+                  <BlogCard
+                    id={item?._id}
+                    title={item?.title}
+                    description={item?.description}
+                    imagen={item?.images[0]?.url}
+                    date={moment(item?.createdAt).format(
+                      "MMMM Do YYYY, h:mm a"
+                    )}
+                  />
+                </div>
+              );
+            })}
+            {/* <div className="">
               <BlogCard />
-            </div>
-            <div className="col-3">
-              <BlogCard />
-            </div>
-            <div className="col-3">
-              <BlogCard />
-            </div>
-            <div className="col-3">
-              <BlogCard />
-            </div>
+            </div> */}
           </div>
         </div>
       </section>

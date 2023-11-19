@@ -3,8 +3,34 @@ import Meta from "../components/Meta";
 import BreadCrumb from "../components/BreadCrumb";
 import { AiOutlineHome, AiOutlineMail } from "react-icons/ai";
 import { BiPhoneCall, BiInfoCircle } from "react-icons/bi";
+import * as yup from "yup";
+import { useFormik } from "formik";
+import { useDispatch } from "react-redux";
+import { postQuery } from "../features/contact/contactSlice";
 
 const Contact = () => {
+  const dispatch= useDispatch()
+  const contactschema = yup.object().shape({
+    name: yup.string().required("Name is required"),
+    email: yup
+      .string()
+      .email("Email should be valid")
+      .required("Email is required"),
+    mobile: yup.number().required("Mobile is required"),
+    comment: yup.string().required("Comment is required"),
+  });
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      mobile: "",
+      comment: "",
+    },
+    validationSchema: contactschema,
+    onSubmit: values => {
+      dispatch(postQuery(values))
+    },
+  });
   return (
     <>
       <Meta title={"Contact"} />
@@ -24,20 +50,39 @@ const Contact = () => {
               <div className="contact-inner-wrapper d-flex justify-content-between">
                 <div>
                   <h3 className="contact-title mb-4">Contact</h3>
-                  <form className="d-flex flex-column gap-15">
+                  <form
+                    onSubmit={formik.handleSubmit}
+                    className="d-flex flex-column gap-15"
+                  >
                     <div>
                       <input
                         type="text"
                         className="form-control"
                         placeholder="Name"
+                        name="name"
+                        value={formik.values.name}
+                        onChange={formik.handleChange("name")}
                       />
+                      <div className="error">
+                        {formik.touched.name && formik.errors.name ? (
+                          <div>{formik.errors.name}</div>
+                        ) : null}
+                      </div>
                     </div>
                     <div>
                       <input
                         type="email"
                         className="form-control"
                         placeholder="Email"
+                        name="email"
+                        value={formik.values.email}
+                        onChange={formik.handleChange("email")}
                       />
+                      <div className="error">
+                        {formik.touched.email && formik.errors.email ? (
+                          <div>{formik.errors.email}</div> 
+                        ) : null}
+                      </div>
                     </div>
 
                     <div>
@@ -45,7 +90,15 @@ const Contact = () => {
                         type="tel"
                         className="form-control"
                         placeholder="Mobile Number"
+                        name="mobile"
+                        value={formik.values.mobile}
+                        onChange={formik.handleChange("mobile")}
                       />
+                      <div className="error">
+                        {formik.touched.mobile && formik.errors.mobile ? (
+                          <div>{formik.errors.mobile}</div>
+                        ) : null}
+                      </div>
                     </div>
 
                     <div>
@@ -54,10 +107,20 @@ const Contact = () => {
                         cols="30"
                         rows="4"
                         placeholder="Comments"
+                        name="comment"
+                        value={formik.values.comment}
+                        onChange={formik.handleChange("comment")}
                       ></textarea>
+                      <div className="error">
+                        {formik.touched.comment && formik.errors.comment ? (
+                          <div>{formik.errors.comment}</div>
+                        ) : null}
+                      </div>
                     </div>
                     <div className="">
-                      <button className="button">Submit</button>
+                      <button className="button" type="submit">
+                        Submit
+                      </button>
                     </div>
                   </form>
                 </div>
@@ -68,7 +131,10 @@ const Contact = () => {
                     <ul className="ps-0">
                       <li className="mb-3 d-flex gap-15 align-items-center">
                         <AiOutlineHome className="fs-5" />
-                        <address className="mb-0">Hno:277, Near village chopal , Mandura, Sonipat, Haryana</address>
+                        <address className="mb-0">
+                          Hno:277, Near village chopal , Mandura, Sonipat,
+                          Haryana
+                        </address>
                       </li>
                       <li className="mb-3 d-flex gap-15 align-items-center">
                         <BiPhoneCall className="fs-5" />

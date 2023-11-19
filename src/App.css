@@ -15,10 +15,82 @@
   --color-1c1c1b: #1c1c1b;
 }
 
+.label_progress{
+  font-size: 14px;
+  color:  var(--color-777777);
+}
+progress {
+  width: 100%;
+  height: 10px;
+  border-radius: 5px; /* Ajusta el valor según tus preferencias */
+  overflow: hidden;
+
+ 
+}
+
+/* Estilos para cambiar el color del fondo del progress bar */
+progress[value]::-webkit-progress-bar {
+  background-color: #f9f9f9;
+  transition: all 0.3s ease-in-out;
+
+
+}
+
+/* Estilos para cambiar el color de relleno del progress bar */
+progress[value]::-webkit-progress-value {
+  background: var(--progress-color, red);
+  transition: all 0.3s ease-in-out;
+  border-radius: 5px; /* Ajusta el valor según tus preferencias */
+  overflow: hidden;
+}
+
+/* Define los colores de fondo de acuerdo con la longitud de la contraseña */
+progress[value="5"]::-webkit-progress-value {
+  --progress-color: yellow;
+  border-radius: 5px; /* Ajusta el valor según tus preferencias */
+  overflow: hidden;
+}
+progress[value="6"]::-webkit-progress-value {
+  --progress-color: yellow;
+  border-radius: 5px; /* Ajusta el valor según tus preferencias */
+  overflow: hidden;
+}  
+
+progress[value="7"]::-webkit-progress-value {
+  --progress-color: rgb(25, 223, 25);
+  border-radius: 5px; /* Ajusta el valor según tus preferencias */
+  overflow: hidden;
+}
+progress[value="8"]::-webkit-progress-value {
+  --progress-color: rgb(25, 223, 25);
+  border-radius: 5px; /* Ajusta el valor según tus preferencias */
+  overflow: hidden;
+}
+progress[value="9"]::-webkit-progress-value {
+  --progress-color: rgb(25, 223, 25);
+  border-radius: 5px; /* Ajusta el valor según tus preferencias */
+  overflow: hidden;
+}
+progress[value="10"]::-webkit-progress-value {
+  --progress-color: rgb(25, 223, 25);
+  border-radius: 5px; /* Ajusta el valor según tus preferencias */
+  overflow: hidden;
+}
+
+
+.dropdown-item:hover{
+  background-color:rgb(236, 236, 236);
+  color: black;
+}
+.btn-edit-profile{
+  cursor: pointer;
+} 
+.error{
+  color: red;
+  font-size: 12px;
+}
 .section-heading {
-  font-size: 26px;
   line-height: 32px;
-  font-weight: 500;
   margin-bottom: 30px;
 }
 .card-wrapper {
@@ -245,6 +317,7 @@ footer .input-group-text {
 .blog-card img {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  width: 100%;
 }
 .blog-content {
   padding: 15px;
@@ -282,12 +355,15 @@ footer .input-group-text {
   color: var(--color-777777);
   font-size: 14px;
 }
+
+
 /* Blog Part End Here*/
 
 
 
 
 /* Product Card*/
+
 .product-card {
   padding: 15px;
   background-color: white;
@@ -301,8 +377,9 @@ footer .input-group-text {
 }
 .product-card .product-image img {
   object-fit: contain;
-
+  
 }
+
 .product-card .product-image > img:last-child {
   display: none;
   transition: 0.3s;
@@ -438,13 +515,24 @@ color: white;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  
 }
 .colors li{
 width: 25px;
 height: 25px;
 background-color: red;
 border-radius: 50%;
+cursor: pointer;
 }
+.efectcolors li{
+  width: 25px;
+  height: 25px;
+  background-color: red;
+  border: 1px solid red;
+  border-radius: 50%;
+  }
+
+  
 .ramdon-products h5{
 font-size: 15px;
 margin-bottom: 8px;
@@ -483,6 +571,8 @@ margin-bottom: 8px;
 .gr-3{
   width: 24%;
 }
+
+
 .gr-24 .product-card .product-image {
   display: flex;
   flex-direction: column;
@@ -498,7 +588,22 @@ margin-bottom: 8px;
 }
 .gr-12 .product-card .product-image{
   width: 30%;
+  
 }
+.gr-3 .test-2-img{
+  height: 15rem;
+
+}
+/* .gr-12 .test-2-img{
+  height: 50%;
+  border: 1px solid red;
+  
+}  */
+
+.gr-3 .product-card{
+  height: 28rem ;
+}
+
 .gr-12 .action-bar{
 top: 14%;
 }
@@ -788,6 +893,10 @@ margin-bottom: 0px;
 }
 
 /* Shipping Page End Here*/
+
+.test-img{
+  height: 20rem;
+}
 
 
 
