@@ -1,4 +1,4 @@
-export const base_url = "https://eccomers-test.onrender.com/api/";
+export const base_url = "http://localhost:4000/api/";
 
 // Obtén el usuario del localStorage si está disponible
 const getTokenFromLocalStorage = localStorage.getItem("customer")

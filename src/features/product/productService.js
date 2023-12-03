@@ -10,7 +10,9 @@ const getProducts = async (data) => {
       data?.tag ? `tags=${data?.tag}&&` : ""
     }${data?.category ? `category=${data?.category}&&` : ""}${
       data?.minPrice ? `price[gte]=${data?.minPrice}&&` : ""
-    }${data?.maxPrice ? `price[lte]=${data?.maxPrice}&&` : ""}`
+    }${data?.maxPrice ? `price[lte]=${data?.maxPrice}&&` : ""}${
+      data?.color ? `color=${data?.color}&&` : ""  // Nuevo filtro de color
+    }`
   );
   if (response.data) {
     return response.data;

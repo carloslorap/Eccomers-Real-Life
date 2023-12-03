@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactStars from "react-rating-stars-component";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -8,7 +8,6 @@ const ProductCard = (props) => {
   const { grid, data } = props;
   const location = useLocation();
   const dispatch = useDispatch();
-  const [isInWishList, setIsInWishList] = useState(false);
   const addtowish = (id) => {
     dispatch(addToWishList(id));
   };
