@@ -25,40 +25,38 @@ const OurStore = () => {
   const productState = useSelector((state) => state?.product?.product);
   const dispatch = useDispatch();
 
+  const [uniqueColorIds, setUniqueColorIds] = useState([]);
+
   useEffect(() => {
     let newBrands = [];
     let category = [];
     let newTags = [];
     let newColors = [];
+
+    let newUniqueColorIds = [];
+
     for (let index = 0; index < productState?.length; index++) {
       const element = productState[index];
       newBrands.push(element?.brand);
       category.push(element?.category);
       newTags.push(element?.tags);
-      newColors.push(element?.color[0]);
-      for (let index = 0; index < productState?.length; index++) {
-        const element = productState[index];
-        if (element.color) {
-          for (
-            let colorIndex = 0;
-            colorIndex < element.color.length;
-            colorIndex++
-          ) {
-            newColors.push(element.color[colorIndex]);
-          }
-        }
+      for (let colorIndex = 0; colorIndex < element.color.length; colorIndex++) {
+        newColors.push(element.color[colorIndex]);
+        newUniqueColorIds.push(element.color[colorIndex]._id);
       }
     }
+
     setbrands(newBrands);
     setcategories(category);
     settags(newTags);
+
+    // Usar un conjunto para obtener IDs únicos de colores
+    setUniqueColorIds(Array.from(new Set(newUniqueColorIds)));
     setcolors(newColors);
   }, [productState]);
 
   const handleColorFilter = (selectedColor) => {
-   
     setcolor(selectedColor);
-    getAllProducts();
   };
 
   const resetFilters = () => {
@@ -67,7 +65,7 @@ const OurStore = () => {
     settag(null);
     setminPrice(null);
     setmaxPrice(null);
-    setcolor(null)
+    setcolor(null);
     getAllProducts();
   };
 
@@ -175,14 +173,16 @@ const OurStore = () => {
                   <h5 className="sub-title">Colors</h5>
 
                   <div className="d-flex flex-wrap gap-10">
-                    {colors &&
-                      [...new Set(colors)].map((item, index) => {
+                    {uniqueColorIds &&
+                      uniqueColorIds.map((colorId, index) => {
+                        const color = colors.find((c) => c._id === colorId);
+
                         return (
-                          <p className="d-flex gap-2 mb-0" >
-                            <ul className="colors ps-0" key={index}>
+                          <p className="d-flex gap-2 mb-0" key={index}>
+                            <ul className="colors ps-0">
                               <li
-                                onClick={() => handleColorFilter(item._id)}
-                                style={{ backgroundColor: item.title }}
+                                onClick={() => handleColorFilter(colorId)}
+                                style={{ backgroundColor: color.title }}
                               ></li>
                             </ul>
                           </p>
